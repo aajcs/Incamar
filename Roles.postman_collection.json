@@ -1,0 +1,169 @@
+{
+  "info": {
+    "name": "Roles API",
+    "_postman_id": "b8f3b9c4-aaaa-bbbb-cccc-rolesapi",
+    "description": "Endpoints de autenticación y gestión de roles/permisos",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000" },
+    { "key": "token", "value": "" },
+    { "key": "roleId", "value": "1" },
+    { "key": "permissionId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Auth - Register",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"full_name\": \"Usuario Demo\",\n  \"email\": \"demo@example.com\",\n  \"password\": \"Secret123!\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/register",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "register"]
+        }
+      }
+    },
+    {
+      "name": "Auth - Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let json = {};",
+              "try { json = pm.response.json(); } catch(e) {}",
+              "if (json.token) {",
+              "  pm.collectionVariables.set('token', json.token);",
+              "  console.log('Token guardado en variable de colección');",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"demo@example.com\",\n  \"password\": \"Secret123!\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "login"]
+        }
+      }
+    },
+    {
+      "name": "Roles - Listar",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/roles",
+          "host": ["{{baseUrl}}"],
+          "path": ["roles"]
+        }
+      }
+    },
+    {
+      "name": "Roles - Obtener por ID",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/roles/{{roleId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["roles", "{{roleId}}"]
+        }
+      }
+    },
+    {
+      "name": "Roles - Crear (admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"role_name\": \"admin\",\n  \"description\": \"Rol administrador\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/roles",
+          "host": ["{{baseUrl}}"],
+          "path": ["roles"]
+        }
+      }
+    },
+    {
+      "name": "Roles - Actualizar (admin)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"role_name\": \"admin\",\n  \"description\": \"Administrador del sistema\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/roles/{{roleId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["roles", "{{roleId}}"]
+        }
+      }
+    },
+    {
+      "name": "Roles - Eliminar (admin)",
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/roles/{{roleId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["roles", "{{roleId}}"]
+        }
+      }
+    },
+    {
+      "name": "Roles - Añadir permiso (admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"permission_id\": {{permissionId}}\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/roles/{{roleId}}/permissions",
+          "host": ["{{baseUrl}}"],
+          "path": ["roles", "{{roleId}}", "permissions"]
+        }
+      }
+    },
+    {
+      "name": "Roles - Remover permiso (admin)",
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/roles/{{roleId}}/permissions/{{permissionId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["roles", "{{roleId}}", "permissions", "{{permissionId}}"]
+        }
+      }
+    }
+  ]
+}

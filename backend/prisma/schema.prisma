@@ -1,0 +1,73 @@
+// Prisma schema file
+// Define your data models here
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // Cambia a tu motor de base de datos si es necesario
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
+}
+
+
+// --- security.roles ---
+model Role {
+  role_id     Int      @id @default(autoincrement())
+  role_name   String   @unique @db.VarChar(50)
+  description String?
+  created_at  DateTime @default(now())
+  rolePermissions RolePermission[]
+  userRoles   UserRole[]
+}
+
+// --- security.permissions ---
+model Permission {
+  permission_id   Int      @id @default(autoincrement())
+  permission_name String   @unique @db.VarChar(100)
+  description     String?
+  rolePermissions RolePermission[]
+}
+
+// --- security.role_permissions ---
+model RolePermission {
+  role_id       Int
+  permission_id Int
+  Role          Role      @relation(fields: [role_id], references: [role_id], onDelete: Cascade)
+  Permission    Permission @relation(fields: [permission_id], references: [permission_id], onDelete: Cascade)
+  @@id([role_id, permission_id])
+}
+
+// --- security.users ---
+model User {
+  user_id       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  full_name     String   @db.VarChar(255)
+  email         String   @unique @db.VarChar(255)
+  password_hash String   @db.VarChar(255)
+  is_active     Boolean  @default(true)
+  last_login_at DateTime?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @default(now())
+  userRoles     UserRole[]
+  accessLogs    AccessLog[]
+}
+
+// --- security.user_roles ---
+model UserRole {
+  user_id String @db.Uuid
+  role_id Int
+  User    User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  Role    Role @relation(fields: [role_id], references: [role_id], onDelete: Cascade)
+  @@id([user_id, role_id])
+}
+
+// --- security.access_logs ---
+model AccessLog {
+  log_id      BigInt   @id @default(autoincrement())
+  user_id     String?  @db.Uuid
+  access_time DateTime @default(now())
+  ip_address  String?  @db.VarChar(45)
+  action      String   @db.VarChar(255)
+  User        User?    @relation(fields: [user_id], references: [user_id])
+}
