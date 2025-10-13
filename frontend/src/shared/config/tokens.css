@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+/* Design Tokens base (CSS variables) */
+/* Primitive tokens */
+:root {
+  /* Colors */
+  --color-brand-50: #f0f7ff;
+  --color-brand-100: #e0efff;
+  --color-brand-200: #b9dcff;
+  --color-brand-300: #8ac3ff;
+  --color-brand-400: #5aa7ff;
+  --color-brand-500: #2b8aff;
+  --color-brand-600: #186fe6;
+  --color-brand-700: #1357b4;
+  --color-brand-800: #0f4185;
+  --color-brand-900: #0a2c59;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --radius-1: 0.25rem;
+  --radius-2: 0.5rem;
+  --radius-3: 0.75rem;
+}
+
+/* Semantic tokens (light by default) */
+:root {
+  --bg: #ffffff;
+  --fg: #0a0a0a;
+  --surface: #f5f7fb;
+  --muted: #6b7280;
+  --primary: var(--color-brand-600);
+  --primary-contrast: #ffffff;
+  --border: #e5e7eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1220;
+    --fg: #e5e7eb;
+    --surface: #0e1729;
+    --muted: #9ca3af;
+    --primary: var(--color-brand-400);
+    --primary-contrast: #0b1220;
+    --border: #1f2937;
+  }
+}
