@@ -1,0 +1,84 @@
+@import "../shared/config/tokens.css";
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+[id] {
+  scroll-margin-top: 5rem;
+}
+/* Estilos personalizados para la sección Hero */
+.hero-bg {
+  background-image: linear-gradient(
+      rgba(0, 77, 128, 0.8),
+      rgba(0, 77, 128, 0.8)
+    ),
+    url("https://placehold.co/1920x800/004d80/ffffff?text=Fondo+Marino");
+  background-size: cover;
+  background-position: center;
+}
+
+/* Estilos para las tarjetas de proyecto */
+.project-card {
+  background-size: cover;
+  background-position: center;
+  height: 300px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+.project-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 77, 128, 0.9) 0%,
+    rgba(0, 77, 128, 0.3) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  color: white;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.project-card:hover .project-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(0, 77, 128, 0.95) 0%,
+    rgba(0, 77, 128, 0.5) 40%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}

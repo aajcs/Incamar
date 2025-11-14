@@ -1,0 +1,185 @@
+{
+  "info": {
+    "name": "Users API",
+    "_postman_id": "d5e6f7a8-4444-5555-6666-usersapi",
+    "description": "Endpoints para gestión de usuarios (CRUD, roles y contraseña)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000" },
+    { "key": "token", "value": "" },
+    { "key": "userId", "value": "00000000-0000-0000-0000-000000000000" },
+    { "key": "roleId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Auth - Login (admin)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let json = {};",
+              "try { json = pm.response.json(); } catch(e) {}",
+              "if (json.token) { pm.collectionVariables.set('token', json.token); }"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"Secret123!\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "login"]
+        }
+      }
+    },
+    {
+      "name": "Users - Listar (admin)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/users",
+          "host": ["{{baseUrl}}"],
+          "path": ["users"]
+        }
+      }
+    },
+    {
+      "name": "Users - Obtener por ID (owner/admin)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/users/{{userId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", "{{userId}}"]
+        }
+      }
+    },
+    {
+      "name": "Users - Crear (admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"full_name\": \"Nuevo Usuario\",\n  \"email\": \"nuevo@example.com\",\n  \"password\": \"Secret123!\",\n  \"role_ids\": [1]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users",
+          "host": ["{{baseUrl}}"],
+          "path": ["users"]
+        }
+      }
+    },
+    {
+      "name": "Users - Actualizar (owner/admin)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"full_name\": \"Nombre Actualizado\",\n  \"email\": \"nuevo@example.com\",\n  \"is_active\": true\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/{{userId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", "{{userId}}"]
+        }
+      }
+    },
+    {
+      "name": "Users - Eliminar (admin)",
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/users/{{userId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", "{{userId}}"]
+        }
+      }
+    },
+    {
+      "name": "Users - Asignar rol (admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"role_id\": {{roleId}}\n}" },
+        "url": {
+          "raw": "{{baseUrl}}/users/{{userId}}/roles",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", "{{userId}}", "roles"]
+        }
+      }
+    },
+    {
+      "name": "Users - Remover rol (admin)",
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/users/{{userId}}/roles/{{roleId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", "{{userId}}", "roles", "{{roleId}}"]
+        }
+      }
+    },
+    {
+      "name": "Users - Cambiar password (admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"new_password\": \"NuevoSecret123!\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/{{userId}}/change-password",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", "{{userId}}", "change-password"]
+        }
+      }
+    },
+    {
+      "name": "Users - Asignar roles (bulk) (admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"role_ids\": [1, 2, 3]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/{{userId}}/roles/bulk",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", "{{userId}}", "roles", "bulk"]
+        }
+      }
+    }
+  ]
+}
