@@ -1,10 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import React from "react";
+import { DiverIcon, WrenchIcon, AnchorIcon, TruckIcon } from "./icons";
+import { useInView } from "./hooks/useInView";
 
-import { getLenis } from "@/shared/lib/lenis";
-import { useEffect, useRef } from "react";
+// --- TYPES ---
+interface ServiceItem {
+  id: string;
+  title: string;
+  bullets: string[];
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  iconColorClass: string;
+}
 
-const services = [
+// --- DATA ---
+const servicesData: ServiceItem[] = [
   {
     id: "buceo",
     title: "Buceo Comercial e Industrial",
@@ -13,6 +22,8 @@ const services = [
       "Ensayos no destructivos y medición de espesores",
       "Pulido de propelas y soldadura subacuática",
     ],
+    icon: DiverIcon,
+    iconColorClass: "text-cyan-400",
   },
   {
     id: "mecanico",
@@ -22,6 +33,8 @@ const services = [
       "Reparaciones eléctricas y mecánicas",
       "Diagnóstico y puesta a punto",
     ],
+    icon: WrenchIcon,
+    iconColorClass: "text-orange-400",
   },
   {
     id: "muelles",
@@ -31,6 +44,8 @@ const services = [
       "Inspección de pilotes y defensas",
       "Rehabilitación superficial",
     ],
+    icon: AnchorIcon,
+    iconColorClass: "text-blue-400",
   },
   {
     id: "logistica",
@@ -40,136 +55,91 @@ const services = [
       "Transporte de personal y carga",
       "Planes de contingencia",
     ],
+    icon: TruckIcon,
+    iconColorClass: "text-green-400",
   },
 ];
 
-export default function ServicesSection() {
-  const containerRef = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    let ctx: any;
-    let gsap: any;
-    let ScrollTrigger: any;
-    let registered = false;
-
-    (async () => {
-      try {
-        const mods = await import("gsap");
-        gsap = mods.default || mods;
-        ScrollTrigger =
-          (await import("gsap/dist/ScrollTrigger")).default ||
-          (gsap as any).ScrollTrigger;
-        if (gsap && ScrollTrigger && !registered) {
-          gsap.registerPlugin(ScrollTrigger);
-          registered = true;
-        }
-
-        // use helper to get Lenis instance
-        const lenis = getLenis();
-        if (lenis && ScrollTrigger) {
-          ScrollTrigger.scrollerProxy(window, {
-            scrollTop(value: number) {
-              if (arguments.length) {
-                try {
-                  lenis.scrollTo(value);
-                } catch {
-                  // fallback
-                  window.scrollTo(0, value);
-                }
-              }
-              // try to return scroll value from lenis if available
-              return (
-                (lenis &&
-                  lenis.scroll &&
-                  lenis.scroll.instance &&
-                  lenis.scroll.instance.scroll) ||
-                window.scrollY
-              );
-            },
-            getBoundingClientRect() {
-              return {
-                top: 0,
-                left: 0,
-                width: window.innerWidth,
-                height: window.innerHeight,
-              };
-            },
-            // pinType based on transform support
-            pinType: document.documentElement.style.transform
-              ? "transform"
-              : "fixed",
-          });
-
-          lenis.on("scroll", () => {
-            ScrollTrigger.update();
-          });
-        }
-
-        if (!containerRef.current) return;
-        ctx = gsap.context(() => {
-          gsap.utils.toArray(".service-card").forEach((el: any, i: number) => {
-            gsap.fromTo(
-              el,
-              { y: 30, opacity: 0 },
-              {
-                y: 0,
-                opacity: 1,
-                duration: 0.7,
-                delay: i * 0.08,
-                ease: "power3.out",
-                scrollTrigger: {
-                  trigger: el,
-                  start: "top 80%",
-                  end: "bottom 60%",
-                  toggleActions: "play none none reverse",
-                },
-              }
-            );
-          });
-        }, containerRef.current);
-      } catch {
-        // ignore errors (gsap not available)
-      }
-    })();
-
-    return () => {
-      try {
-        if (ctx) ctx.revert();
-        if (ScrollTrigger) ScrollTrigger.kill();
-      } catch {
-        // ignore
-      }
-    };
-  }, []);
-
+// --- CHILD COMPONENTS ---
+const AnimatedDiv: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}> = ({ children, className, delay = 0 }) => {
+  const [ref, isInView] = useInView({ threshold: 0.1 });
   return (
-    <section
-      id="services"
-      ref={containerRef}
-      className="py-16 bg-[color-mix(in_oklab,var(--fg)2%,transparent)]"
+    <div
+      ref={ref}
+      className={`${className} transition-all duration-700 ease-out ${
+        isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      }`}
+      style={{ transitionDelay: `${delay}ms` }}
     >
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-semibold mb-6">Servicios</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {services.map((s) => (
-            <article
-              key={s.id}
-              className="service-card p-6 border rounded-lg shadow-sm bg-[var(--surface)]"
-            >
-              <div className="flex items-start gap-4">
-                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-sky-400 to-cyan-600 flex items-center justify-center text-white font-bold">
-                  {s.title.charAt(0)}
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">{s.title}</h3>
-                  <ul className="mt-3 list-disc list-inside text-sm">
-                    {s.bullets.map((b, i) => (
-                      <li key={i}>{b}</li>
-                    ))}
-                  </ul>
+      {children}
+    </div>
+  );
+};
+
+// --- MAIN COMPONENT ---
+export default function ServicesSection() {
+  return (
+    <section id="services" className="py-24 sm:py-32">
+      <div className="container mx-auto px-6 lg:px-8">
+        <div className="text-center max-w-3xl mx-auto">
+          <AnimatedDiv>
+            <h2 className="text-4xl font-extrabold text-gray-100 sm:text-5xl tracking-tight">
+              Nuestros Servicios
+            </h2>
+          </AnimatedDiv>
+          <AnimatedDiv delay={150}>
+            <p className="mt-6 text-lg text-gray-300 leading-8">
+              Ofrecemos una gama completa de soluciones marinas y submarinas,
+              respaldadas por un equipo de expertos y tecnología de punta para
+              garantizar resultados de la más alta calidad.
+            </p>
+          </AnimatedDiv>
+        </div>
+
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8">
+          {servicesData.map((service, index) => (
+            <AnimatedDiv key={service.id} delay={index * 150}>
+              <div className="p-8 bg-blue-950/60 backdrop-blur-sm border border-white/10 rounded-2xl shadow-lg hover:bg-white/10 transition-all duration-300 h-full">
+                <div className="flex items-start gap-6">
+                  <div className="flex-shrink-0">
+                    <div
+                      className={`w-14 h-14 rounded-xl bg-blue-900 flex items-center justify-center shadow-md`}
+                    >
+                      <service.icon
+                        className={`w-8 h-8 ${service.iconColorClass}`}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-gray-100 mb-3">
+                      {service.title}
+                    </h3>
+                    <ul className="space-y-2">
+                      {service.bullets.map((bullet, i) => (
+                        <li key={i} className="flex items-start text-gray-300">
+                          <svg
+                            className="w-4 h-4 mr-3 mt-1 text-blue-400 flex-shrink-0"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                              clipRule="evenodd"
+                            ></path>
+                          </svg>
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </article>
+            </AnimatedDiv>
           ))}
         </div>
       </div>

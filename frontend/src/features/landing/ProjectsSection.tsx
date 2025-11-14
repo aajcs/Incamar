@@ -1,216 +1,203 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useState, useEffect, useRef } from "react";
-import { getLenis } from "@/shared/lib/lenis";
-import { useSpring, animated } from "@react-spring/web";
+import React, { useState, useRef } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useTransform,
+  useSpring,
+} from "framer-motion";
+import { useInView } from "./hooks/useInView";
 
-const mockProjects = Array.from({ length: 6 }).map((_, i) => ({
-  id: `p${i + 1}`,
-  title: `Proyecto Ejemplo ${i + 1}`,
-  desc: "Descripción breve del proyecto mostrando resultados y alcance.",
-}));
-
-function ProjectCard({
-  project,
-  onOpen,
-}: {
-  project: any;
-  onOpen: (id: string) => void;
-}) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [props, api] = useSpring(() => ({
-    rotX: 0,
-    rotY: 0,
-    scale: 1,
-    config: { mass: 1, tension: 170, friction: 26 },
-  }));
-
-  const isInteractive = () => {
-    return !!(ref.current && ref.current.classList.contains("is-active"));
-  };
-
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (!ref.current) return;
-    // only run tilt if scroll-driven activation enabled
-    if (!isInteractive()) return;
-
-    const rect = ref.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const rotY = ((x - rect.width / 2) / rect.width) * 12; // horizontal tilt
-    const rotX = -((y - rect.height / 2) / rect.height) * 8; // vertical tilt
-    api.start({ rotX, rotY, scale: 1.03 });
-  };
-
-  const handlePointerLeave = () => {
-    api.start({ rotX: 0, rotY: 0, scale: 1 });
-  };
-
-  return (
-    <animated.figure
-      ref={ref}
-      className="cursor-pointer project-card will-change-transform"
-      onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
-      onClick={() => onOpen(project.id)}
-      style={{
-        transform: props.rotX
-          .to((rx) => `perspective(800px) rotateX(${rx}deg)`)
-          .toString(),
-      }}
-    >
-      <animated.div
-        style={{
-          transform: props.rotY.to((ry) => `rotateY(${ry}deg)`).toString(),
-          scale: props.scale,
-        }}
-        className="bg-white rounded shadow-sm"
-      >
-        <div className="h-40 bg-gray-200 rounded mb-2" />
-        <figcaption className="px-2 pb-2">
-          <h4 className="font-semibold">{project.title}</h4>
-          <p className="text-sm text-muted">{project.desc}</p>
-        </figcaption>
-      </animated.div>
-    </animated.figure>
-  );
+// --- TYPES ---
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  longDescription: string;
+  imageUrl: string;
 }
 
-export default function ProjectsSection() {
-  const [open, setOpen] = useState<string | null>(null);
-  const containerRef = useRef<HTMLElement | null>(null);
+// --- DATA ---
+const mockProjects: Project[] = Array.from({ length: 6 }).map((_, i) => ({
+  id: `p${i + 1}`,
+  title: `Proyecto Marino ${i + 1}`,
+  description: "Inspección y mantenimiento de plataforma offshore.",
+  longDescription:
+    "Este proyecto implicó una inspección submarina completa utilizando ROVs y buzos comerciales certificados. Se realizaron ensayos no destructivos, mediciones de espesores y reparaciones estructurales críticas para garantizar la integridad y seguridad de la plataforma según los estándares internacionales.",
+  imageUrl: `https://picsum.photos/seed/project${i + 1}/800/600`,
+}));
 
-  useEffect(() => {
-    let ctx: any;
-    let gsap: any;
-    let ScrollTrigger: any;
+// --- CHILD COMPONENTS ---
+const AnimatedDiv: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}> = ({ children, className, delay = 0 }) => {
+  const [ref, isInView] = useInView({ threshold: 0.1 });
+  return (
+    <div
+      ref={ref}
+      className={`${className} transition-all duration-700 ease-out ${
+        isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      }`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+};
 
-    (async () => {
-      try {
-        const mods = await import("gsap");
-        gsap = mods.default || mods;
-        ScrollTrigger =
-          (await import("gsap/dist/ScrollTrigger")).default ||
-          (gsap as any).ScrollTrigger;
-        if (gsap && ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+const ProjectCard: React.FC<{
+  project: Project;
+  onOpen: (id: string) => void;
+}> = ({ project, onOpen }) => {
+  const ref = useRef<HTMLDivElement>(null);
 
-        const lenis = getLenis();
-        const scroller =
-          document.scrollingElement || document.documentElement || window;
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
-        if (lenis && ScrollTrigger) {
-          ScrollTrigger.scrollerProxy(scroller, {
-            scrollTop(value: number) {
-              if (arguments.length) {
-                try {
-                  lenis.scrollTo(value);
-                } catch {
-                  (scroller as any).scrollTop = value;
-                }
-              }
-              return (
-                (lenis &&
-                  lenis.scroll &&
-                  lenis.scroll.instance &&
-                  lenis.scroll.instance.scroll) ||
-                (scroller as any).scrollTop ||
-                window.scrollY
-              );
-            },
-            getBoundingClientRect() {
-              return {
-                top: 0,
-                left: 0,
-                width: window.innerWidth,
-                height: window.innerHeight,
-              };
-            },
-            pinType: document.documentElement.style.transform
-              ? "transform"
-              : "fixed",
-          });
+  const springConfig = { damping: 25, stiffness: 200 };
+  const springX = useSpring(x, springConfig);
+  const springY = useSpring(y, springConfig);
 
-          // ensure ScrollTrigger is aware of Lenis and refresh
-          lenis.on("scroll", () => {
-            ScrollTrigger.update();
-          });
-        }
+  const rotateX = useTransform(springY, [-150, 150], [10, -10]);
+  const rotateY = useTransform(springX, [-150, 150], [-10, 10]);
 
-        if (!containerRef.current) return;
-        ctx = gsap.context(() => {
-          gsap.utils.toArray(".project-card").forEach((el: any, i: number) => {
-            // add scrollTrigger that toggles 'is-active' class based on visibility
-            gsap.fromTo(
-              el,
-              { y: 30, opacity: 0 },
-              {
-                y: 0,
-                opacity: 1,
-                duration: 0.7,
-                delay: i * 0.06,
-                ease: "power3.out",
-                scrollTrigger: {
-                  trigger: el,
-                  start: "top 85%",
-                  end: "bottom 20%",
-                  onEnter: () => el.classList.add("is-active"),
-                  onEnterBack: () => el.classList.add("is-active"),
-                  onLeave: () => el.classList.remove("is-active"),
-                  onLeaveBack: () => el.classList.remove("is-active"),
-                },
-              }
-            );
-          });
-        }, containerRef.current);
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    x.set(e.clientX - (rect.left + rect.width / 2));
+    y.set(e.clientY - (rect.top + rect.height / 2));
+  };
 
-        // force refresh after setup to avoid initial jump
-        try {
-          ScrollTrigger.refresh();
-        } catch {
-          // ignore
-        }
-      } catch {
-        // ignore
-      }
-    })();
-
-    return () => {
-      try {
-        if (ctx) ctx.revert();
-        if (ScrollTrigger) ScrollTrigger.kill();
-      } catch {
-        // ignore
-      }
-    };
-  }, []);
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
-    <section id="projects" ref={containerRef} className="py-16">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-semibold mb-6">Proyectos</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {mockProjects.map((p) => (
-            <ProjectCard key={p.id} project={p} onOpen={(id) => setOpen(id)} />
-          ))}
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      onClick={() => onOpen(project.id)}
+      style={{ perspective: "1000px" }}
+      className="cursor-pointer"
+    >
+      <motion.div
+        style={{ rotateX, rotateY, scale: 1 }}
+        whileHover={{ scale: 1.05 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className="bg-blue-950/60 backdrop-blur-sm border border-white/10 rounded-2xl shadow-lg h-full overflow-hidden"
+      >
+        <img
+          src={project.imageUrl}
+          alt={project.title}
+          className="w-full h-48 object-cover"
+        />
+        <div className="p-6">
+          <h4 className="font-bold text-xl text-gray-100">{project.title}</h4>
+          <p className="text-sm text-gray-400 mt-2">{project.description}</p>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+// --- MAIN COMPONENT ---
+export default function ProjectsSection() {
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const selectedProject = selectedId
+    ? mockProjects.find((p) => p.id === selectedId)
+    : null;
+
+  return (
+    <section id="projects" className="py-24 sm:py-32 relative overflow-hidden">
+      {/* Parallax Background - Scoped to this section */}
+      <div className="absolute inset-0 z-0">
+        {/* Background image: avoid Tailwind's bg-fixed issues on non-body elements.
+            If you still want the 'fixed' effect, backgroundAttachment is set inline
+            (some browsers treat bg-attachment fixed differently on non-root elements). */}
+        <div
+          className="w-full h-full bg-cover bg-center"
+          style={{
+            backgroundImage:
+              "url('https://png.pngtree.com/thumb_back/fh260/background/20241101/pngtree-tranquil-underwater-landscape-featuring-colorful-rocks-surrounded-by-diverse-aquatic-flora-image_16484128.jpg')",
+            backgroundAttachment: "fixed", // optional; more reliable here than relying on bg-fixed utility
+          }}
+          aria-hidden="true"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a192f]/90 to-[#0d2a4c]/95 pointer-events-none"></div>
+      </div>
+
+      {/* Ensure the content sits above the background */}
+      <div className="container mx-auto px-6 lg:px-8 relative z-10">
+        <div className="text-center max-w-3xl mx-auto">
+          <AnimatedDiv>
+            <h2 className="text-4xl font-extrabold text-gray-100 sm:text-5xl tracking-tight">
+              Proyectos Destacados
+            </h2>
+          </AnimatedDiv>
+          <AnimatedDiv delay={150}>
+            <p className="mt-6 text-lg text-gray-300 leading-8">
+              Explora algunos de nuestros trabajos más recientes y desafiantes.
+              Cada proyecto refleja nuestro compromiso con la excelencia, la
+              seguridad y la innovación en el sector marino.
+            </p>
+          </AnimatedDiv>
         </div>
 
-        {open && (
-          <div
-            className="fixed inset-0 z-60 flex items-center justify-center bg-black/60"
-            onClick={() => setOpen(null)}
-          >
-            <div className="bg-white rounded p-6 max-w-xl w-full">
-              <div className="h-64 bg-gray-200 rounded mb-4" />
-              <h3 className="text-xl font-semibold">
-                {mockProjects.find((m) => m.id === open)?.title}
-              </h3>
-              <p className="text-sm mt-2">
-                {mockProjects.find((m) => m.id === open)?.desc}
-              </p>
-            </div>
-          </div>
-        )}
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {mockProjects.map((project, index) => (
+            <AnimatedDiv key={project.id} delay={index * 150}>
+              <ProjectCard project={project} onOpen={setSelectedId} />
+            </AnimatedDiv>
+          ))}
+        </div>
       </div>
+
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedId(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          >
+            <motion.div
+              layoutId={`card-${selectedProject.id}`}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-blue-950/80 border border-white/10 rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <img
+                src={selectedProject.imageUrl}
+                alt={selectedProject.title}
+                className="w-full h-64 object-cover"
+              />
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-gray-100">
+                  {selectedProject.title}
+                </h3>
+                <p className="text-gray-300 mt-4 leading-relaxed">
+                  {selectedProject.longDescription}
+                </p>
+                <button
+                  onClick={() => setSelectedId(null)}
+                  className="mt-6 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition-colors"
+                >
+                  Cerrar
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

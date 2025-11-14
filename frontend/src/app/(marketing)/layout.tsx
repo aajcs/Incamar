@@ -1,5 +1,6 @@
 import Navbar from "@/shared/ui/organisms/Navbar";
 import Footer from "@/shared/ui/organisms/Footer";
+import Chatbot from "@/features/landing/Chatbot";
 
 export default function MarketingLayout({
   children,
@@ -11,6 +12,7 @@ export default function MarketingLayout({
       <Navbar />
       <main className="w-full px-6 py-10">{children}</main>
       <Footer />
+      <Chatbot />
     </div>
   );
 }

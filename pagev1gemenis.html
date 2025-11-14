@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ingeniería y Calidad Marina C.A. | INCAMAR</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- AOS: Animate On Scroll CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <style>
+      /* Configuración de la fuente Inter por defecto */
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
+      :root {
+        --color-primary: #004d80; /* Azul Marino Oscuro */
+        --color-secondary: #007bff; /* Azul Vibrante */
+        --color-accent: #ff4500; /* Naranja Seguridad */
+        --color-background: #f4f7f9; /* Gris Claro */
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        color: #1f2937; /* Dark Gray text */
+        background-color: var(--color-background);
+      }
+
+      .text-primary {
+        color: var(--color-primary);
+      }
+      .bg-primary {
+        background-color: var(--color-primary);
+      }
+      .bg-secondary {
+        background-color: var(--color-secondary);
+      }
+      .hover-accent:hover {
+        background-color: var(--color-accent);
+      }
+
+      /* Estilos personalizados para la sección Hero */
+      .hero-bg {
+        /* Usamos una imagen de placeholder para un fondo marino */
+        background-image: linear-gradient(
+            rgba(0, 77, 128, 0.8),
+            rgba(0, 77, 128, 0.8)
+          ),
+          url("https://placehold.co/1920x800/004d80/ffffff?text=Fondo+Marino");
+        background-size: cover;
+        background-position: center;
+      }
+
+      /* Estilos para las tarjetas de proyecto */
+      .project-card {
+        background-size: cover;
+        background-position: center;
+        height: 300px; /* Altura fija para la galería */
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .project-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 77, 128, 0.9) 0%,
+          rgba(0, 77, 128, 0.3) 50%,
+          rgba(0, 0, 0, 0) 100%
+        );
+        color: white;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+      }
+
+      .project-card:hover .project-overlay {
+        background: linear-gradient(
+          to top,
+          rgba(0, 77, 128, 0.95) 0%,
+          rgba(0, 77, 128, 0.5) 40%,
+          rgba(0, 0, 0, 0) 100%
+        );
+      }
+
+      /* Estilos para el Feed de Instagram (Placeholder visual) */
+      .instagram-placeholder {
+        min-height: 150px;
+        background-color: #e0e0e0;
+        border: 1px dashed #9ca3af;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        color: #6b7280;
+      }
+
+      /* Utilidad para smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navegación Principal -->
+    <header id="inicio" class="sticky top-0 z-50 bg-primary shadow-lg">
+      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+          <!-- Logo -->
+          <a href="#inicio" class="flex-shrink-0 flex items-center space-x-3">
+            <!-- Logo Placeholder Image -->
+            <img
+              src="https://placehold.co/40x40/ff4500/ffffff?text=IC"
+              alt="Logo INCAMAR C.A."
+              class="h-10 w-auto rounded-full shadow-md"
+            />
+            <div>
+              <span class="text-xl font-bold text-white tracking-wider"
+                >INCAMAR C.A.</span
+              >
+              <span class="block text-xs font-light text-gray-300"
+                >Ingeniería y Calidad Marina</span
+              >
+            </div>
+          </a>
+
+          <!-- Menú Desktop -->
+          <div class="hidden lg:flex lg:items-center lg:space-x-8">
+            <a
+              href="#inicio"
+              class="text-white hover:text-gray-300 font-medium transition duration-150 ease-in-out"
+              >INICIO</a
+            >
+            <a
+              href="#servicios"
+              class="text-white hover:text-gray-300 font-medium transition duration-150 ease-in-out"
+              >SERVICIOS</a
+            >
+            <a
+              href="#proyectos"
+              class="text-white hover:text-gray-300 font-medium transition duration-150 ease-in-out"
+              >PROYECTOS</a
+            >
+            <a
+              href="#certificaciones"
+              class="text-white hover:text-gray-300 font-medium transition duration-150 ease-in-out"
+              >CERTIFICACIONES</a
+            >
+            <a
+              href="#recursos"
+              class="text-white hover:text-gray-300 font-medium transition duration-150 ease-in-out"
+              >RECURSOS</a
+            >
+            <a
+              href="#contacto"
+              class="text-white hover:text-gray-300 font-medium transition duration-150 ease-in-out"
+              >CONTACTO</a
+            >
+            <!-- Selector de Idioma -->
+            <div class="text-sm font-semibold text-gray-200 ml-4">
+              <span class="cursor-pointer hover:text-white transition"
+                >Español</span
+              >
+              |
+              <span class="cursor-pointer hover:text-white transition"
+                >English</span
+              >
+            </div>
+          </div>
+
+          <!-- Botón Móvil -->
+          <button
+            id="menu-button"
+            class="lg:hidden p-2 rounded-md text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+            aria-expanded="false"
+          >
+            <!-- Icono de Hamburguesa (SVG) -->
+            <svg
+              class="block h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Menú Móvil (Oculto por defecto) -->
+      <div id="mobile-menu" class="hidden lg:hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a
+            href="#inicio"
+            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >INICIO</a
+          >
+          <a
+            href="#servicios"
+            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >SERVICIOS</a
+          >
+          <a
+            href="#proyectos"
+            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >PROYECTOS</a
+          >
+          <a
+            href="#certificaciones"
+            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >CERTIFICACIONES</a
+          >
+          <a
+            href="#recursos"
+            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >RECURSOS</a
+          >
+          <a
+            href="#contacto"
+            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >CONTACTO</a
+          >
+          <div class="px-3 py-2 text-sm font-semibold text-gray-400">
+            <span class="cursor-pointer hover:text-white transition"
+              >Español</span
+            >
+            |
+            <span class="cursor-pointer hover:text-white transition"
+              >English</span
+            >
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- 1. Sección de Inicio (Hero) -->
+      <section class="hero-bg py-24 sm:py-32" aria-labelledby="hero-heading">
+        <div
+          class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+          data-aos="fade-down"
+          data-aos-duration="1500"
+        >
+          <h1
+            id="hero-heading"
+            class="text-5xl sm:text-6xl font-extrabold text-white mb-4 leading-tight"
+          >
+            Ingeniería y Calidad Marina C.A.
+          </h1>
+          <p
+            class="text-xl sm:text-2xl text-gray-200 font-light max-w-3xl mx-auto mb-8"
+          >
+            Soluciones Subacuáticas y Mantenimiento de Clase Mundial
+          </p>
+          <div
+            class="inline-block px-6 py-2 bg-yellow-400 text-gray-900 font-bold rounded-full shadow-lg mb-10"
+          >
+            9 AÑOS DE EXPERIENCIA (Octubre de 2012)
+          </div>
+
+          <p class="text-lg text-white max-w-4xl mx-auto mb-10">
+            Somos un grupo de profesionales con un solo objetivo: aportar nuevos
+            conocimientos y desarrollo al área de mantenimiento marino, con
+            ética profesional y cultivando la búsqueda continua en la mejora.
+          </p>
+
+          <!-- CTA Principal -->
+          <a
+            href="#contacto"
+            data-aos="zoom-in"
+            data-aos-delay="500"
+            class="inline-block bg-white text-primary px-10 py-4 text-xl font-bold rounded-xl shadow-2xl transition duration-300 transform hover:scale-105 hover-accent hover:text-white"
+          >
+            Solicite su Cotización Hoy
+          </a>
+        </div>
+      </section>
+
+      <!-- 3. Sección de Certificaciones (Trust Bar) - MEJORADA CON LOGOS SIMULADOS -->
+      <section
+        id="certificaciones"
+        class="bg-gray-100 py-12 border-b-4 border-accent"
+      >
+        <div
+          class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+          data-aos="fade-up"
+        >
+          <h2 class="text-3xl font-extrabold text-primary mb-8">
+            Contamos con Certificaciones Internacionales
+          </h2>
+          <div
+            class="flex flex-wrap justify-center items-center gap-8 sm:gap-16 mb-6"
+          >
+            <!-- Placeholder de Logos de Certificaciones -->
+            <img
+              src="https://placehold.co/120x60/007FFF/ffffff?text=IWS+ABS"
+              alt="Logo IWS ABS"
+              class="h-10 sm:h-12 w-auto object-contain shadow-md rounded-lg"
+              data-aos="zoom-in"
+              data-aos-delay="200"
+            />
+            <img
+              src="https://placehold.co/120x60/3CB371/ffffff?text=LLOYD'S"
+              alt="Logo Lloyd’s Register"
+              class="h-10 sm:h-12 w-auto object-contain shadow-md rounded-lg"
+              data-aos="zoom-in"
+              data-aos-delay="400"
+            />
+            <img
+              src="https://placehold.co/120x60/008080/ffffff?text=BUREAU+VERITAS"
+              alt="Logo Bureau Veritas"
+              class="h-10 sm:h-12 w-auto object-contain shadow-md rounded-lg"
+              data-aos="zoom-in"
+              data-aos-delay="600"
+            />
+          </div>
+          <p
+            class="text-xl font-semibold text-accent mt-6"
+            data-aos="fade-up"
+            data-aos-delay="800"
+          >
+            ¡SOMOS ÚNICOS EN LA ZONA CON PERMISO DE REPARACIONES SUBACUÁTICAS!
+          </p>
+        </div>
+      </section>
+
+      <!-- 4. Sección de Servicios -->
+      <section id="servicios" class="py-20 sm:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2
+            class="text-4xl font-extrabold text-primary text-center mb-12"
+            data-aos="fade-up"
+            data-aos-offset="150"
+          >
+            Nuestros Servicios Especializados
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <!-- Tarjeta: Buceo Comercial e Industrial -->
+            <div
+              class="bg-white rounded-2xl shadow-xl p-8 border-t-4 border-secondary transition duration-300 hover:shadow-2xl"
+              data-aos="fade-right"
+              data-aos-offset="150"
+            >
+              <div class="text-4xl text-secondary mb-4">
+                <!-- Icono de Buzo (Placeholder SVG) -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M12 2a4 4 0 0 0-4 4v2a4 4 0 0 0 4 4 4 4 0 0 0 4-4V6a4 4 0 0 0-4-4z"
+                  />
+                  <path d="M12 12v10m-3-3h6m-9-7h18" />
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-primary mb-4">
+                Buceo Comercial e Industrial
+              </h3>
+              <p class="text-gray-600 mb-6">
+                Servicios de inspecciones y mantenimiento subacuático con
+                **certificaciones de Clase** (IWS ABS, Lloyd’s, Bureau Veritas).
+              </p>
+              <ul class="list-none space-y-2 text-gray-700">
+                <li class="flex items-start">
+                  <span class="text-secondary mr-2">•</span> Inspecciones
+                  certificadas y Ensayos No Destructivos (NDT).
+                </li>
+                <li class="flex items-start">
+                  <span class="text-secondary mr-2">•</span> Pulitura de propela
+                  hidráulica (Fuel Saving) y Soldadura Subacuática.
+                </li>
+                <li class="flex items-start">
+                  <span class="text-secondary mr-2">•</span> Limpieza de cascos
+                  de buques, muelles y plataformas con Water Blasting.
+                </li>
+              </ul>
+              <a
+                href="#contacto"
+                class="inline-block mt-6 text-secondary hover:text-primary font-semibold transition duration-150"
+              >
+                Leer Más &rarr;
+              </a>
+            </div>
+
+            <!-- Tarjeta: Mantenimiento Acuático en Muelles y Estructuras -->
+            <div
+              class="bg-white rounded-2xl shadow-xl p-8 border-t-4 border-secondary transition duration-300 hover:shadow-2xl"
+              data-aos="fade-left"
+              data-aos-offset="150"
+            >
+              <div class="text-4xl text-secondary mb-4">
+                <!-- Icono de Muelle (Placeholder SVG) -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M10 20L14 4m-4 16L6 8m8 12L18 8m-4-4L6 16m8-12L18 16m-4-4H8m8 0h-4"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-primary mb-4">
+                Mantenimiento Acuático en Muelles y Estructuras
+              </h3>
+              <p class="text-gray-600 mb-6">
+                Servicios enfocados en asegurar la integridad de su
+                infraestructura portuaria.
+              </p>
+              <ul class="list-none space-y-2 text-gray-700">
+                <li class="flex items-start">
+                  <span class="text-secondary mr-2">•</span> Limpieza de
+                  estructuras y remoción de crecimiento marino en pilotes.
+                </li>
+                <li class="flex items-start">
+                  <span class="text-secondary mr-2">•</span> Inspección de
+                  Pilotes con CCTV (visualización y condición estructural).
+                </li>
+                <li class="flex items-start">
+                  <span class="text-secondary mr-2">•</span> Medición de
+                  alturas, espesores subacuáticos y potencial eléctrico.
+                </li>
+              </ul>
+              <a
+                href="#contacto"
+                class="inline-block mt-6 text-secondary hover:text-primary font-semibold transition duration-150"
+              >
+                Leer Más &rarr;
+              </a>
+            </div>
+
+            <!-- Tarjeta: Mantenimiento y Reparaciones Mecánicas -->
+            <div
+              class="bg-white rounded-2xl shadow-xl p-8 border-t-4 border-secondary transition duration-300 hover:shadow-2xl"
+              data-aos="fade-right"
+              data-aos-offset="150"
+              data-aos-delay="100"
+            >
+              <div class="text-4xl text-secondary mb-4">
+                <!-- Icono de Herramienta (Placeholder SVG) -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-2.43 2.43a2 2 0 0 0-2.83 2.83l.79.79a2 2 0 0 1-.72 3.32C4.1 20.5 2 18.39 3.5 19l-.79-.79a2 2 0 0 0-2.83-2.83l-2.43-2.43a6 6 0 0 1 7.94-7.94z"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-primary mb-4">
+                Mantenimiento y Reparaciones Mecánicas
+              </h3>
+              <p class="text-gray-600 mb-6">
+                Mantenimiento preventivo y correctivo en disciplinas clave
+                (Mecánica, Electricidad, Instrumentación).
+              </p>
+              <ul class="list-none space-y-2 text-gray-700">
+                <li class="flex items-start">
+                  <span class="text-secondary mr-2">•</span> Reparaciones
+                  mayores a motores propulsores, generadores y sistemas de
+                  control.
+                </li>
+                <li class="flex items-start">
+                  <span class="text-secondary mr-2">•</span> Mantenimiento de
+                  bombas, sistemas hidráulicos y de refrigeración.
+                </li>
+                <li class="flex items-start">
+                  <span class="text-secondary mr-2">•</span> Área Estructural
+                  Naval (soldadura, metalmecánica y pintura).
+                </li>
+              </ul>
+              <a
+                href="#contacto"
+                class="inline-block mt-6 text-secondary hover:text-primary font-semibold transition duration-150"
+              >
+                Leer Más &rarr;
+              </a>
+            </div>
+
+            <!-- Tarjeta: Logística Marina y Terrestre (Lanchaje) -->
+            <div
+              class="bg-white rounded-2xl shadow-xl p-8 border-t-4 border-secondary transition duration-300 hover:shadow-2xl"
+              data-aos="fade-left"
+              data-aos-offset="150"
+              data-aos-delay="100"
+            >
+              <div class="text-4xl text-secondary mb-4">
+                <!-- Icono de Barco (Placeholder SVG) -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M4 20h16c-1.39-1.99-4.32-3.41-8-3.41s-6.61 1.42-8 3.41z"
+                  />
+                  <path d="M12 16v-8l-4 4-2-2m6 6V8l4 4 2-2" />
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-primary mb-4">
+                Logística Marina y Terrestre (Lanchaje)
+              </h3>
+              <p class="text-gray-600 mb-6">
+                Servicio de lanchaje seguro y eficiente para el transporte de
+                personal, equipos y carga esencial.
+              </p>
+              <ul class="list-none space-y-2 text-gray-700">
+                <li class="flex items-start">
+                  <span class="text-secondary mr-2">•</span> Conducción de
+                  pasajeros, tripulantes, pilotos y autoridades.
+                </li>
+                <li class="flex items-start">
+                  <span class="text-secondary mr-2">•</span> Flota de Lanchas de
+                  Pilotaje disponible.
+                </li>
+                <li class="flex items-start">
+                  <span class="text-secondary mr-2">•</span> Abordaje y regreso
+                  a tierra de manera oportuna.
+                </li>
+              </ul>
+              <a
+                href="#contacto"
+                class="inline-block mt-6 text-secondary hover:text-primary font-semibold transition duration-150"
+              >
+                Leer Más &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Sección Sobre Nosotros (Misión, Visión, Valores) -->
+      <section class="bg-primary text-white py-20 sm:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2
+            class="text-4xl font-extrabold text-center mb-16"
+            data-aos="fade-up"
+          >
+            Nuestra Identidad
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <!-- MISIÓN -->
+            <div
+              class="text-center p-6 bg-gray-700 bg-opacity-30 rounded-xl shadow-lg"
+              data-aos="zoom-in"
+              data-aos-delay="100"
+            >
+              <h3 class="text-2xl font-bold mb-4 border-b pb-2 border-accent">
+                MISIÓN
+              </h3>
+              <p class="font-light">
+                Prestar servicios especializados submarinos competitivos y de
+                alta calidad, garantizando la seguridad, calidad y respeto al
+                medio ambiente con el propósito de satisfacer los requerimientos
+                de nuestros clientes.
+              </p>
+            </div>
+            <!-- VISIÓN -->
+            <div
+              class="text-center p-6 bg-gray-700 bg-opacity-30 rounded-xl shadow-lg"
+              data-aos="zoom-in"
+              data-aos-delay="300"
+            >
+              <h3 class="text-2xl font-bold mb-4 border-b pb-2 border-accent">
+                VISIÓN
+              </h3>
+              <p class="font-light">
+                Consolidarnos como una empresa de servicios submarinos líder en
+                el mercado nacional, reconocida por su capacidad en la
+                prestación de servicios oportunos, seguros, confiables, altos
+                estándares de calidad y cumplimiento.
+              </p>
+            </div>
+            <!-- VALORES -->
+            <div
+              class="text-center p-6 bg-gray-700 bg-opacity-30 rounded-xl shadow-lg"
+              data-aos="zoom-in"
+              data-aos-delay="500"
+            >
+              <h3 class="text-2xl font-bold mb-4 border-b pb-2 border-accent">
+                VALORES
+              </h3>
+              <p class="font-light">
+                Nos destacamos por nuestra **ética empresarial, excelencia** y
+                **sentido de responsabilidad** para cumplir con los compromisos
+                adquiridos de manera oportuna y eficaz, asegurando los mejores
+                resultados.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-16 text-center" data-aos="fade-up">
+            <h3 class="text-2xl font-bold mb-4">Conoce a Nuestro Equipo</h3>
+            <p class="text-gray-200 max-w-2xl mx-auto">
+              Nuestro equipo está compuesto por profesionales altamente
+              cualificados (ingenieros, buzos de primera clase, técnicos),
+              comprometidos con ofrecer servicios de calidad y superar las
+              expectativas de nuestros clientes.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Proyectos y Testimonios - SECCIÓN MEJORADA -->
+      <section id="proyectos" class="py-20 sm:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2
+            class="text-4xl font-extrabold text-primary text-center mb-12"
+            data-aos="fade-up"
+          >
+            Proyectos Destacados: Casos de Éxito
+          </h2>
+
+          <!-- Galería de Proyectos: Cuadrícula de Tarjetas -->
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
+          >
+            <!-- Proyecto 1: Inspección de Buque Tanque -->
+            <div
+              class="project-card rounded-xl shadow-xl"
+              style="
+                background-image: url('https://placehold.co/600x400/003366/ffffff?text=INSPECCIÓN+IWS');
+              "
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <div class="project-overlay">
+                <span class="text-xs font-semibold text-accent mb-1"
+                  >BUCEO COMERCIAL</span
+                >
+                <h4 class="text-xl font-bold mb-2 leading-tight">
+                  Inspección IWS ABS de Buque Tanque
+                </h4>
+                <p class="text-sm font-light">
+                  Inspección subacuática completa para renovación de clase,
+                  garantizando el cumplimiento normativo.
+                </p>
+                <div class="mt-3 flex justify-between text-sm font-medium">
+                  <span
+                    ><svg
+                      class="w-4 h-4 inline mr-1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                    Puerto La Cruz</span
+                  >
+                  <span>2023</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Proyecto 2: Mantenimiento de Pilotaje -->
+            <div
+              class="project-card rounded-xl shadow-xl"
+              style="
+                background-image: url('https://placehold.co/600x400/0055aa/ffffff?text=LIMPIEZA+MUELLE');
+              "
+              data-aos="fade-up"
+              data-aos-delay="300"
+            >
+              <div class="project-overlay">
+                <span class="text-xs font-semibold text-accent mb-1"
+                  >MANTENIMIENTO EN MUELLES</span
+                >
+                <h4 class="text-xl font-bold mb-2 leading-tight">
+                  Mantenimiento de Pilotaje en Muelle Petrolero
+                </h4>
+                <p class="text-sm font-light">
+                  Limpieza mecánica, medición de espesores y potencial eléctrico
+                  en más de 40 pilotes de la estructura.
+                </p>
+                <div class="mt-3 flex justify-between text-sm font-medium">
+                  <span
+                    ><svg
+                      class="w-4 h-4 inline mr-1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                    Terminal Marítimo</span
+                  >
+                  <span>2024</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Proyecto 3: Pulido de Propela -->
+            <div
+              class="project-card rounded-xl shadow-xl"
+              style="
+                background-image: url('https://placehold.co/600x400/007bff/ffffff?text=PULIDO+PROPELA');
+              "
+              data-aos="fade-up"
+              data-aos-delay="500"
+            >
+              <div class="project-overlay">
+                <span class="text-xs font-semibold text-accent mb-1"
+                  >EFICIENCIA Y BUCEO</span
+                >
+                <h4 class="text-xl font-bold mb-2 leading-tight">
+                  Sustitución y Pulido Hidráulico de Propela
+                </h4>
+                <p class="text-sm font-light">
+                  Servicio de pulido de propela con sistemas hidráulicos para la
+                  máxima optimización del consumo de combustible (Fuel Saving).
+                </p>
+                <div class="mt-3 flex justify-between text-sm font-medium">
+                  <span
+                    ><svg
+                      class="w-4 h-4 inline mr-1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                    Astillero Local</span
+                  >
+                  <span>2023</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Proyecto 4: Reparación Estructural Naval -->
+            <div
+              class="project-card rounded-xl shadow-xl"
+              style="
+                background-image: url('https://placehold.co/600x400/0099cc/ffffff?text=REPARACIÓN+NAVAL');
+              "
+              data-aos="fade-up"
+              data-aos-delay="700"
+            >
+              <div class="project-overlay">
+                <span class="text-xs font-semibold text-accent mb-1"
+                  >REPARACIONES MECÁNICAS</span
+                >
+                <h4 class="text-xl font-bold mb-2 leading-tight">
+                  Reparación Estructural Naval Certificada
+                </h4>
+                <p class="text-sm font-light">
+                  Trabajos de soldadura a estructuras y reparaciones de
+                  metalmecánica en casco bajo certificación de Clase.
+                </p>
+                <div class="mt-3 flex justify-between text-sm font-medium">
+                  <span
+                    ><svg
+                      class="w-4 h-4 inline mr-1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                    Base Naval</span
+                  >
+                  <span>2024</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonios -->
+          <div
+            class="bg-white rounded-2xl shadow-xl p-8 border-l-8 border-accent"
+            data-aos="fade-right"
+          >
+            <h3 class="text-2xl font-bold text-primary mb-4">
+              Testimonios de Nuestros Clientes
+            </h3>
+            <blockquote class="text-xl italic text-gray-700">
+              "Nuestra colaboración con Ingeniería y Calidad Marina ha sido un
+              éxito rotundo. Su profesionalismo y atención al detalle son
+              incomparables."
+            </blockquote>
+            <p class="text-right mt-4 font-semibold text-gray-800">
+              - Cliente Satisfecho
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- FIN DE SECCIÓN MEJORADA -->
+
+      <!-- 6. Recursos (Blog y Catálogo) -->
+      <section id="recursos" class="bg-gray-100 py-20 sm:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2
+            class="text-4xl font-extrabold text-primary text-center mb-12"
+            data-aos="fade-up"
+          >
+            Recursos y Actualizaciones
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <!-- Blog -->
+            <div
+              class="bg-white rounded-2xl shadow-lg p-8"
+              data-aos="fade-right"
+            >
+              <h3 class="text-2xl font-bold text-secondary mb-4">
+                Últimas Noticias y Artículos
+              </h3>
+              <p class="text-gray-600 mb-6">
+                Mantente informado con nuestro blog, donde compartimos noticias
+                relevantes, tendencias de la industria marítima y consejos
+                prácticos para el mantenimiento marino.
+              </p>
+              <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                <li>Noticias relevantes del sector.</li>
+                <li>Tendencias de la industria marítima.</li>
+                <li>Consejos prácticos para el mantenimiento marino.</li>
+              </ul>
+              <a
+                href="#"
+                class="inline-block mt-6 bg-accent text-white px-6 py-3 font-semibold rounded-lg shadow-md hover:bg-red-700 transition"
+              >
+                Visitar Blog
+              </a>
+            </div>
+
+            <!-- Descarga de Catálogo -->
+            <div
+              class="bg-primary text-white rounded-2xl shadow-lg p-8"
+              data-aos="fade-left"
+            >
+              <h3 class="text-2xl font-bold mb-4 border-b pb-2 border-accent">
+                Descarga Nuestro Catálogo de Servicios
+              </h3>
+              <p class="mb-6 text-gray-200">
+                Ingresa tus datos para recibir nuestro catálogo de servicios
+                completo en formato PDF directamente en tu correo electrónico.
+              </p>
+
+              <form id="catalog-form" class="space-y-4">
+                <div>
+                  <input
+                    type="text"
+                    id="catalog-name"
+                    name="name"
+                    placeholder="Nombre"
+                    required
+                    class="w-full px-4 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-accent"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    id="catalog-email"
+                    name="email"
+                    placeholder="Correo Electrónico"
+                    required
+                    class="w-full px-4 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-accent"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  class="w-full bg-accent text-white px-6 py-3 font-bold rounded-lg shadow-md hover:bg-red-700 transition"
+                >
+                  Descargar Catálogo de Servicios
+                </button>
+              </form>
+              <p
+                id="catalog-message"
+                class="mt-4 text-center text-sm text-gray-300 hidden"
+              >
+                ¡Gracias! El catálogo ha sido enviado a tu correo.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Contacto -->
+      <section id="contacto" class="py-20 sm:py-24">
+        <div
+          class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 bg-white rounded-2xl shadow-2xl p-8 sm:p-12 border-t-8 border-secondary"
+          data-aos="zoom-in-up"
+        >
+          <h2 class="text-4xl font-extrabold text-primary text-center mb-4">
+            Hable con un Experto
+          </h2>
+          <p class="text-center text-lg text-gray-600 mb-10">
+            Para más información, solicitar una inspección o recibir una
+            cotización, complete el formulario.
+          </p>
+
+          <form id="contact-form" class="space-y-6">
+            <!-- Nombre Completo -->
+            <div>
+              <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                placeholder="1. Nombre Completo"
+                required
+                class="w-full px-5 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary"
+              />
+            </div>
+            <!-- Correo Electrónico -->
+            <div>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="2. Correo Electrónico"
+                required
+                class="w-full px-5 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary"
+              />
+            </div>
+            <!-- Teléfono (Opcional) -->
+            <div>
+              <input
+                type="tel"
+                id="telefono"
+                name="telefono"
+                placeholder="3. Teléfono (Opcional)"
+                class="w-full px-5 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary"
+              />
+            </div>
+            <!-- Empresa -->
+            <div>
+              <input
+                type="text"
+                id="empresa"
+                name="empresa"
+                placeholder="4. Empresa"
+                class="w-full px-5 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary"
+              />
+            </div>
+            <!-- Mensaje -->
+            <div>
+              <textarea
+                id="mensaje"
+                name="mensaje"
+                rows="4"
+                placeholder="5. Mensaje / Detalle del Requerimiento"
+                required
+                class="w-full px-5 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary"
+              ></textarea>
+            </div>
+
+            <!-- Captcha Simple -->
+            <div
+              class="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg border"
+            >
+              <label
+                id="captcha-label"
+                for="captcha-response"
+                class="font-medium text-gray-700"
+              >
+                <!-- El texto del captcha se generará con JS -->
+              </label>
+              <input
+                type="number"
+                id="captcha-response"
+                name="captcha-response"
+                placeholder="Respuesta"
+                required
+                class="w-24 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+              />
+            </div>
+            <p id="captcha-error" class="text-red-600 hidden text-sm">
+              Error en el cálculo. Por favor, inténtelo de nuevo.
+            </p>
+
+            <button
+              type="submit"
+              class="w-full bg-secondary text-white px-6 py-4 text-xl font-bold rounded-xl shadow-lg hover:bg-primary transition duration-300"
+            >
+              Enviar Solicitud
+            </button>
+            <p class="text-center text-sm text-gray-500 mt-4">
+              Recibirás una respuesta de nuestro equipo de ingeniería lo antes
+              posible.
+            </p>
+          </form>
+          <p
+            id="submission-message"
+            class="text-center mt-6 text-xl font-semibold text-green-600 hidden"
+          >
+            ¡Mensaje enviado con éxito!
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          class="grid grid-cols-2 md:grid-cols-4 gap-8 border-b border-gray-700 pb-8 mb-8"
+        >
+          <div>
+            <h4 class="text-lg font-bold mb-4 border-b border-secondary pb-1">
+              <!-- Logo en el Footer -->
+              <img
+                src="https://placehold.co/40x40/ff4500/ffffff?text=IC"
+                alt="Logo INCAMAR C.A."
+                class="h-8 w-auto inline mr-2 rounded-full"
+              />
+              INCAMAR
+            </h4>
+            <p class="text-sm text-gray-400">
+              Ingeniería y Calidad Marina C.A. Soluciones de mantenimiento
+              marino certificadas internacionalmente.
+            </p>
+          </div>
+          <div>
+            <h4 class="text-lg font-bold mb-4 border-b border-secondary pb-1">
+              Servicios
+            </h4>
+            <ul class="space-y-2 text-sm">
+              <li>
+                <a
+                  href="#servicios"
+                  class="text-gray-300 hover:text-white transition"
+                  >Buceo Industrial</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#servicios"
+                  class="text-gray-300 hover:text-white transition"
+                  >Mantenimiento Mecánico</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#servicios"
+                  class="text-gray-300 hover:text-white transition"
+                  >Inspección de Muelles</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#servicios"
+                  class="text-gray-300 hover:text-white transition"
+                  >Logística Marina</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-lg font-bold mb-4 border-b border-secondary pb-1">
+              Recursos
+            </h4>
+            <ul class="space-y-2 text-sm">
+              <li>
+                <a
+                  href="#proyectos"
+                  class="text-gray-300 hover:text-white transition"
+                  >Proyectos</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-300 hover:text-white transition"
+                  >Blog</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#recursos"
+                  class="text-gray-300 hover:text-white transition"
+                  >Descargar Catálogo</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#certificaciones"
+                  class="text-gray-300 hover:text-white transition"
+                  >Certificaciones</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-lg font-bold mb-4 border-b border-secondary pb-1">
+              Contacto
+            </h4>
+            <p class="text-sm text-gray-300">Dirección: [Placeholder]</p>
+            <p class="text-sm text-gray-300">Email: [Placeholder]</p>
+            <p class="text-sm text-gray-300">Teléfono: [Placeholder]</p>
+            <!-- Íconos Sociales Placeholder -->
+            <div class="flex space-x-3 mt-4">
+              <span class="text-xl text-gray-400 hover:text-white transition"
+                >FB</span
+              >
+              <span class="text-xl text-gray-400 hover:text-white transition"
+                >LI</span
+              >
+              <span class="text-xl text-gray-400 hover:text-white transition"
+                >IG</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="text-center text-sm text-gray-500">
+          &copy; 2024 Ingeniería y Calidad Marina C.A. Todos los derechos
+          reservados.
+        </div>
+      </div>
+    </footer>
+
+    <!-- AOS: Animate On Scroll JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+      // Inicializar AOS para que la animación se repita cada vez que el elemento
+      // entra en el viewport (scroll-reversal effect).
+      AOS.init({
+        duration: 1000,
+        once: false, // <-- Esto permite que las animaciones se repitan al hacer scroll
+        easing: "ease-out-cubic",
+        offset: 120,
+      });
+
+      // Lógica del Menú Móvil
+      document
+        .getElementById("menu-button")
+        .addEventListener("click", function () {
+          const mobileMenu = document.getElementById("mobile-menu");
+          const isExpanded =
+            this.getAttribute("aria-expanded") === "true" || false;
+          this.setAttribute("aria-expanded", !isExpanded);
+          mobileMenu.classList.toggle("hidden");
+        });
+
+      // Lógica del Captcha
+      let captchaSolution;
+
+      function generateCaptcha() {
+        const num1 = Math.floor(Math.random() * 9) + 1; // 1-9
+        const num2 = Math.floor(Math.random() * 9) + 1; // 1-9
+        captchaSolution = num1 + num2;
+        document.getElementById(
+          "captcha-label"
+        ).textContent = `6. Captcha: ${num1} + ${num2} =`;
+        document.getElementById("captcha-response").value = "";
+        document.getElementById("captcha-error").classList.add("hidden");
+      }
+
+      // Inicializar Captcha
+      generateCaptcha();
+
+      // Lógica del Formulario de Contacto
+      document
+        .getElementById("contact-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const responseInput = document.getElementById("captcha-response");
+          const errorMessage = document.getElementById("captcha-error");
+          const submissionMessage =
+            document.getElementById("submission-message");
+
+          // 1. Validar Captcha
+          if (parseInt(responseInput.value) !== captchaSolution) {
+            errorMessage.classList.remove("hidden");
+            submissionMessage.classList.add("hidden");
+            responseInput.classList.add("border-red-500", "ring-red-500");
+            generateCaptcha(); // Regenerar Captcha en caso de error
+            return;
+          }
+
+          // 2. Si el Captcha es correcto, simular envío
+          errorMessage.classList.add("hidden");
+          responseInput.classList.remove("border-red-500", "ring-red-500");
+
+          // Simulación de éxito
+          submissionMessage.classList.remove("hidden");
+          this.reset();
+          generateCaptcha(); // Nuevo Captcha para la próxima vez
+
+          // Ocultar mensaje de éxito después de 5 segundos
+          setTimeout(() => {
+            submissionMessage.classList.add("hidden");
+          }, 5000);
+        });
+
+      // Lógica del Formulario de Catálogo
+      document
+        .getElementById("catalog-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const catalogMessage = document.getElementById("catalog-message");
+
+          // Simulación de éxito
+          catalogMessage.classList.remove("hidden");
+          this.reset();
+
+          // Ocultar mensaje después de 5 segundos
+          setTimeout(() => {
+            catalogMessage.classList.add("hidden");
+          }, 5000);
+        });
+    </script>
+  </body>
+</html>
